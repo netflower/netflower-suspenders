@@ -1,7 +1,7 @@
-# Suspenders [![Build Status](https://secure.travis-ci.org/thoughtbot/suspenders.png?branch=master)](http://travis-ci.org/thoughtbot/suspenders)
+# netflower's Suspenders [![Build Status](https://travis-ci.org/netflower/netflower-suspenders.svg)](https://travis-ci.org/netflower/netflower-suspenders)
 
-Suspenders is the base Rails application used at
-[thoughtbot](http://thoughtbot.com).
+This is a [suspenders](https://github.com/thoughtbot/suspenders) fork in use at [netflower](http://netflower.de).
+Huge thanks to [thoughtbot](http://thoughtbot.com) for providing such a great starting point.
 
   ![Suspenders boy](http://media.tumblr.com/1TEAMALpseh5xzf0Jt6bcwSMo1_400.png)
 
@@ -9,11 +9,11 @@ Suspenders is the base Rails application used at
 
 First install the suspenders gem:
 
-    gem install suspenders
+    gem install netflower-suspenders
 
 Then run:
 
-    suspenders projectname
+    netflower-suspenders projectname
 
 This will create a Rails app in `projectname` using the latest version of Rails.
 

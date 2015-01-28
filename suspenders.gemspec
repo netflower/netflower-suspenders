@@ -5,22 +5,22 @@ require 'date'
 
 Gem::Specification.new do |s|
   s.required_ruby_version = ">= #{Suspenders::RUBY_VERSION}"
-  s.authors = ['thoughtbot']
+  s.authors = ['thoughtbot', 'netflower']
   s.date = Date.today.strftime('%Y-%m-%d')
 
   s.description = <<-HERE
 Suspenders is a base Rails project that you can upgrade. It is used by
-thoughtbot to get a jump start on a working app. Use Suspenders if you're in a
+netflower to get a jump start on a working app. Use Suspenders if you're in a
 rush to build something amazing; don't use it if you like missing deadlines.
   HERE
 
-  s.email = 'support@thoughtbot.com'
-  s.executables = ['suspenders']
+  s.email = 'info@netflower.de'
+  s.executables = ['netflower-suspenders']
   s.extra_rdoc_files = %w[README.md LICENSE]
   s.files = `git ls-files`.split("\n")
-  s.homepage = 'http://github.com/thoughtbot/suspenders'
+  s.homepage = 'http://github.com/netflower/netflower-suspenders'
   s.license = 'MIT'
-  s.name = 'suspenders'
+  s.name = 'netflower-suspenders'
   s.rdoc_options = ['--charset=UTF-8']
   s.require_paths = ['lib']
   s.summary = "Generate a Rails app using thoughtbot's best practices."

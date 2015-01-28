@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    suspenders (1.24.0)
+    netflower-suspenders (1.24.0)
       bitters (~> 0.10.0)
       bundler (~> 1.3)
       rails (= 4.2.0)
@@ -153,5 +153,5 @@ DEPENDENCIES
   aruba (~> 0.5)
   capybara (~> 2.2, >= 2.2.0)
   cucumber (~> 1.2)
+  netflower-suspenders!
   rspec (~> 2.0)
-  suspenders!
