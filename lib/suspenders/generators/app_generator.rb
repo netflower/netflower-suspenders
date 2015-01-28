@@ -6,12 +6,6 @@ module Suspenders
     class_option :database, type: :string, aliases: "-d", default: "postgresql",
       desc: "Configure for selected database (options: #{DATABASES.join("/")})"
 
-    class_option :heroku, type: :boolean, aliases: "-H", default: false,
-      desc: "Create staging and production Heroku apps"
-
-    class_option :heroku_flags, type: :string, default: "",
-      desc: "Set extra Heroku flags"
-
     class_option :github, type: :string, aliases: "-G", default: nil,
       desc: "Create Github repository and add remote origin pointed to repo"
 
@@ -43,8 +37,6 @@ module Suspenders
       invoke :remove_routes_comment_lines
       invoke :setup_git
       invoke :setup_database
-      invoke :create_heroku_apps
-      invoke :create_github_repo
       invoke :setup_segment_io
       invoke :setup_bundler_audit
       invoke :outro
@@ -53,10 +45,6 @@ module Suspenders
     def customize_gemfile
       build :replace_gemfile
       build :set_ruby_to_version_being_used
-
-      if options[:heroku]
-        build :setup_heroku_specific_gems
-      end
 
       bundle_command 'install'
     end
@@ -154,17 +142,6 @@ module Suspenders
         say 'Initializing git'
         invoke :setup_gitignore
         invoke :init_git
-      end
-    end
-
-    def create_heroku_apps
-      if options[:heroku]
-        say "Creating Heroku apps"
-        build :create_heroku_apps, options[:heroku_flags]
-        build :set_heroku_remotes
-        build :set_heroku_rails_secrets
-        build :set_memory_management_variable
-        build :provide_deploy_script
       end
     end
 
