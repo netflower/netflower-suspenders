@@ -248,14 +248,6 @@ end
         'app/assets/stylesheets/application.css.scss'
     end
 
-    def install_bitters
-      run "bitters install --path app/assets/stylesheets"
-    end
-
-    def install_refills
-      run "rails generate refills:import flashes"
-    end
-
     def gitignore_files
       remove_file '.gitignore'
       copy_file 'suspenders_gitignore', '.gitignore'
