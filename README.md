@@ -26,8 +26,6 @@ generated projectname/Gemfile.
 It includes application gems like:
 
 * [Airbrake](https://github.com/airbrake/airbrake) for exception notification
-* [Delayed Job](https://github.com/collectiveidea/delayed_job) for background
-  processing
 * [Email Validator](https://github.com/balexand/email_validator) for email
   validation
 * [Flutie](https://github.com/thoughtbot/flutie) for and `body_class` view
@@ -40,6 +38,7 @@ It includes application gems like:
   taking too long
 * [Recipient Interceptor](https://github.com/croaky/recipient_interceptor) to
   avoid accidentally sending emails to real people from staging
+* [Sidekiq](https://github.com/mperham/sidekiq) for background processing
 * [Simple Form](https://github.com/plataformatec/simple_form) for form markup
   and style
 * [Title](https://github.com/calebthompson/title) for storing titles in

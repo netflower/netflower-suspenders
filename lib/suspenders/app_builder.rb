@@ -188,9 +188,9 @@ end
       copy_file "config_i18n_tasks.yml", "config/i18n-tasks.yml"
     end
 
-    def configure_background_jobs_for_rspec
-      copy_file 'background_jobs_rspec.rb', 'spec/support/background_jobs.rb'
-      run 'rails g delayed_job:active_record'
+    def configure_background_jobs
+      copy_file 'sidekiq.yml', 'config/sidekiq.yml'
+      copy_file 'sidekiq_rspec.rb', 'spec/support/sidekiq.rb'
     end
 
     def configure_action_mailer_in_specs
