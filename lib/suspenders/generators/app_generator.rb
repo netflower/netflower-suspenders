@@ -35,7 +35,6 @@ module Suspenders
       invoke :remove_routes_comment_lines
       invoke :setup_git
       invoke :setup_database
-      invoke :setup_segment_io
       invoke :setup_bundler_audit
       invoke :outro
     end
@@ -83,7 +82,6 @@ module Suspenders
 
     def setup_production_environment
       say 'Setting up the production environment'
-      build :configure_newrelic
       build :configure_smtp
       build :enable_rack_deflater
       build :setup_asset_host
@@ -138,11 +136,6 @@ module Suspenders
         say 'Creating Github repo'
         build :create_github_repo, options[:github]
       end
-    end
-
-    def setup_segment_io
-      say 'Setting up Segment.io'
-      build :setup_segment_io
     end
 
     def setup_gitignore

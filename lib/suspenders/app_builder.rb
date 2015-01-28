@@ -50,10 +50,6 @@ module Suspenders
       copy_file 'factory_girl_rspec.rb', 'spec/support/factory_girl.rb'
     end
 
-    def configure_newrelic
-      template 'newrelic.yml.erb', 'config/newrelic.yml'
-    end
-
     def configure_smtp
       copy_file 'smtp.rb', 'config/smtp.rb'
 
@@ -289,11 +285,6 @@ you can deploy to staging and production with:
     def create_github_repo(repo_name)
       path_addition = override_path_for_tests
       run "#{path_addition} hub create #{repo_name}"
-    end
-
-    def setup_segment_io
-      copy_file '_analytics.html.erb',
-        'app/views/application/_analytics.html.erb'
     end
 
     def setup_bundler_audit
