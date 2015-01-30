@@ -9,4 +9,6 @@ install:
   - bundle install
 notifications:
   email: false
+  slack:
+    secure: GQIdARnyGdaxUKK6gWHYQ5TWz7CFTV5lVlCv/hZ9+9U4bN64aePvJHpjZWjCxo65+xNiCh7izv0OtnKXEmSdqOOcBgCmtsHbpseYcEqkqshOmlCknAcOs1bnSwEKrbQUDA43MTKYSA3bvHefLn1ZpNv4zSDvNwuJ2zoCvB2A0xw=
 sudo: false
