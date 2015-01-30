@@ -25,12 +25,13 @@ generated projectname/Gemfile.
 
 It includes application gems like:
 
-* [Airbrake](https://github.com/airbrake/airbrake) for exception notification
 * [Email Validator](https://github.com/balexand/email_validator) for email
   validation
 * [Flutie](https://github.com/thoughtbot/flutie) for and `body_class` view
   helper
 * [High Voltage](https://github.com/thoughtbot/high_voltage) for static pages
+* [Honeybadger](https://github.com/honeybadger-io/honeybadger-ruby) for
+  exception notification
 * [jQuery Rails](https://github.com/rails/jquery-rails) for jQuery
 * [Normalize](https://necolas.github.io/normalize.css/) for resetting browser styles
 * [Postgres](https://github.com/ged/ruby-pg) for access to the Postgres database
