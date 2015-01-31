@@ -72,6 +72,7 @@ And testing gems like:
 * [RSpec Mocks](https://github.com/rspec/rspec-mocks) for stubbing and spying
 * [Shoulda Matchers](https://github.com/thoughtbot/shoulda-matchers) for common
   RSpec matchers
+* [Simplecov](https://github.com/colszowka/simplecov) for test coverage
 * [Timecop](https://github.com/jtrupiano/timecop-console) for testing time
 
 ## Other goodies

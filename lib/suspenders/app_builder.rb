@@ -170,6 +170,10 @@ end
       copy_file "spec_helper.rb", "spec/spec_helper.rb"
     end
 
+    def configure_simplecov
+      copy_file 'simplecov_rspec.rb', 'spec/support/simplecov.rb'
+    end
+
     def configure_travis
       template 'travis.yml.erb', '.travis.yml'
     end
