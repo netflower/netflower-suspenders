@@ -48,6 +48,7 @@ module Suspenders
 
     def set_up_factory_girl_for_rspec
       copy_file 'factory_girl_rspec.rb', 'spec/support/factory_girl.rb'
+      copy_file 'factories_spec.rb', 'spec/models/factories_spec.rb'
     end
 
     def configure_smtp
