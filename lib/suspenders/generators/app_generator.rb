@@ -3,7 +3,7 @@ require 'rails/generators/rails/app/app_generator'
 
 module Suspenders
   class AppGenerator < Rails::Generators::AppGenerator
-    class_option :database, type: :string, aliases: "-d", default: "postgresql",
+    class_option :database, type: :string, aliases: "-d", default: "mysql",
       desc: "Configure for selected database (options: #{DATABASES.join("/")})"
 
     class_option :github, type: :string, aliases: "-G", default: nil,
@@ -49,8 +49,8 @@ module Suspenders
     def setup_database
       say 'Setting up database'
 
-      if 'postgresql' == options[:database]
-        build :use_postgres_config_template
+      if 'mysql' == options[:database]
+        build :use_mysql_config_template
       end
 
       build :create_database

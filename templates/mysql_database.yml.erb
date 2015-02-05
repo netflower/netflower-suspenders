@@ -1,0 +1,19 @@
+development: &default
+  adapter: mysql2
+  database: <%= app_name %>_development
+  username: root
+  password:
+  encoding: utf8
+  host: 127.0.0.1
+  min_messages: warning
+  pool: 2
+
+test:
+  <<: *default
+  database: <%= app_name %>
+
+production:
+  <<: *default
+  database: <%= app_name %>
+  username: <%= app_name %>
+  password: <%%= ENV['<%= "#{app_name.underscore.upcase}_DATABASE_PASSWORD" %>'] %>

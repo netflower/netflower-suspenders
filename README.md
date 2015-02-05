@@ -33,8 +33,8 @@ It includes application gems like:
 * [Honeybadger](https://github.com/honeybadger-io/honeybadger-ruby) for
   exception notification
 * [jQuery Rails](https://github.com/rails/jquery-rails) for jQuery
+* [MySQL](https://github.com/brianmario/mysql2) for access to the MySQL database
 * [Normalize](https://necolas.github.io/normalize.css/) for resetting browser styles
-* [Postgres](https://github.com/ged/ruby-pg) for access to the Postgres database
 * [Rack Timeout](https://github.com/kch/rack-timeout) to abort requests that are
   taking too long
 * [Recipient Interceptor](https://github.com/croaky/recipient_interceptor) to
@@ -134,7 +134,7 @@ full-stack JavaScript integration testing. It requires QT. Instructions for
 installing QT are
 [here](https://github.com/thoughtbot/capybara-webkit/wiki/Installing-Qt-and-compiling-capybara-webkit).
 
-PostgreSQL needs to be installed and running for the `db:create` rake task.
+MySQL needs to be installed and running for the `db:create` rake task.
 
 ## Issues
 

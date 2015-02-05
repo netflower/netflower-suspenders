@@ -137,8 +137,8 @@ end
         force: true
     end
 
-    def use_postgres_config_template
-      template 'postgresql_database.yml.erb', 'config/database.yml',
+    def use_mysql_config_template
+      template 'mysql_database.yml.erb', 'config/database.yml',
         force: true
     end
 
