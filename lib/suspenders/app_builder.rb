@@ -296,6 +296,13 @@ you can deploy to staging and production with:
       run "#{path_addition} hub create #{repo_name}"
     end
 
+    def setup_rubocop_git
+      copy_file 'hound.yml', '.hound.yml'
+      copy_file 'rubocop.yml', '.rubocop.yml'
+      copy_file 'rubocop_git.rake', 'lib/tasks/rubocop_git.rake'
+      append_file 'Rakefile', %{\ntask default: "rubocop:git"}
+    end
+
     def setup_bundler_audit
       copy_file "bundler_audit.rake", "lib/tasks/bundler_audit.rake"
       append_file "Rakefile", %{\ntask default: "bundler:audit"\n}

@@ -35,6 +35,7 @@ module Suspenders
       invoke :remove_routes_comment_lines
       invoke :setup_git
       invoke :setup_database
+      invoke :setup_rubocop_git
       invoke :setup_bundler_audit
       invoke :outro
     end
@@ -142,6 +143,11 @@ module Suspenders
 
     def setup_gitignore
       build :gitignore_files
+    end
+
+    def setup_rubocop_git
+      say 'Setting up rubocop-git'
+      build :setup_rubocop_git
     end
 
     def setup_bundler_audit

@@ -48,13 +48,15 @@ It includes application gems like:
 
 And development gems like:
 
+* [Bundler Audit](https://github.com/rubysec/bundler-audit) for scanning the
+  Gemfile for insecure dependencies based on published CVEs
+* [ByeBug](https://github.com/deivid-rodriguez/byebug) for interactively
+  debugging behavior
 * [Dotenv](https://github.com/bkeepers/dotenv) for loading environment variables
 * [Pry Rails](https://github.com/rweng/pry-rails) for interactively exploring
   objects
-* [ByeBug](https://github.com/deivid-rodriguez/byebug) for interactively
-  debugging behavior
-* [Bundler Audit](https://github.com/rubysec/bundler-audit) for scanning the
-  Gemfile for insecure dependencies based on published CVEs
+* [RuboCop](https://github.com/bbatsov/rubocop) for reviewing code for style
+  guide violations
 * [Spring](https://github.com/rails/spring) for fast Rails actions via
   pre-loading
 * [Web Console](https://github.com/rails/web-console) for better debugging via
