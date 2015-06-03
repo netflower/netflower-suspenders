@@ -70,6 +70,7 @@ module Suspenders
 
     def setup_test_environment
       say 'Setting up the test environment'
+      build :provide_ci_build_script
       build :set_up_factory_girl_for_rspec
       build :generate_rspec
       build :configure_rspec

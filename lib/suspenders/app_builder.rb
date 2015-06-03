@@ -24,6 +24,11 @@ module Suspenders
       run "chmod a+x bin/setup"
     end
 
+    def provide_ci_build_script
+      template "bin_cibuild.erb", "bin/cibuild", force: true
+      run "chmod a+x bin/cibuild"
+    end
+
     def provide_dev_prime_task
       copy_file 'development_seeds.rb', 'lib/tasks/development_seeds.rake'
     end
