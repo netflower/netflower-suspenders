@@ -1,0 +1,25 @@
+#!/bin/sh
+set -ex
+
+# Set up configurable environment variables
+if [ ! -f .env ]; then
+  cp .sample.env .env
+fi
+
+# Set up the database url
+DATABASE_URL="mysql2://root@localhost/<%= app_name %>_test"
+export DATABASE_URL
+
+# Set up Ruby dependencies
+hostname
+ruby -v
+env
+bundle install --binstubs --path vendor/gems
+
+# Set up databse and make sure migrations are working
+bin/rake db:drop
+bin/rake db:create
+bin/rake db:migrate --trace
+
+# Run tests
+bundle exec rspec

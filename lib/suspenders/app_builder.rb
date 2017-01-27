@@ -24,6 +24,11 @@ module Suspenders
       run "chmod a+x bin/setup"
     end
 
+    def provide_ci_build_script
+      template "bin_cibuild.erb", "bin/cibuild", force: true
+      run "chmod a+x bin/cibuild"
+    end
+
     def provide_dev_prime_task
       copy_file 'development_seeds.rb', 'lib/tasks/development_seeds.rake'
     end
@@ -48,10 +53,7 @@ module Suspenders
 
     def set_up_factory_girl_for_rspec
       copy_file 'factory_girl_rspec.rb', 'spec/support/factory_girl.rb'
-    end
-
-    def configure_newrelic
-      template 'newrelic.yml.erb', 'config/newrelic.yml'
+      copy_file 'factories_spec.rb', 'spec/models/factories_spec.rb'
     end
 
     def configure_smtp
@@ -140,8 +142,8 @@ end
         force: true
     end
 
-    def use_postgres_config_template
-      template 'postgresql_database.yml.erb', 'config/database.yml',
+    def use_mysql_config_template
+      template 'mysql_database.yml.erb', 'config/database.yml',
         force: true
     end
 
@@ -156,14 +158,6 @@ end
 
     def set_ruby_to_version_being_used
       create_file '.ruby-version', "#{Suspenders::RUBY_VERSION}\n"
-    end
-
-    def setup_heroku_specific_gems
-      inject_into_file(
-        "Gemfile",
-        %{\n\s\sgem "rails_stdout_logging"},
-        after: /group :staging, :production do/
-      )
     end
 
     def enable_database_cleaner
@@ -182,12 +176,20 @@ end
       copy_file "spec_helper.rb", "spec/spec_helper.rb"
     end
 
+    def configure_simplecov
+      copy_file 'simplecov_rspec.rb', 'spec/support/simplecov.rb'
+    end
+
     def configure_travis
       template 'travis.yml.erb', '.travis.yml'
     end
 
     def configure_i18n_for_test_environment
       copy_file "i18n.rb", "spec/support/i18n.rb"
+    end
+
+    def configure_model_annotations
+      copy_file 'auto_annotate_models.rake', 'lib/tasks/auto_annotate_models.rake'
     end
 
     def configure_i18n_for_missing_translations
@@ -200,9 +202,9 @@ end
       copy_file "config_i18n_tasks.yml", "config/i18n-tasks.yml"
     end
 
-    def configure_background_jobs_for_rspec
-      copy_file 'background_jobs_rspec.rb', 'spec/support/background_jobs.rb'
-      run 'rails g delayed_job:active_record'
+    def configure_background_jobs
+      copy_file 'sidekiq.yml', 'config/sidekiq.yml'
+      copy_file 'sidekiq_rspec.rb', 'spec/support/sidekiq.rb'
     end
 
     def configure_action_mailer_in_specs
@@ -241,8 +243,8 @@ end
       generate 'rspec:install'
     end
 
-    def configure_unicorn
-      copy_file 'unicorn.rb', 'config/unicorn.rb'
+    def configure_puma
+      copy_file 'puma.rb', 'config/puma.rb'
     end
 
     def setup_foreman
@@ -254,14 +256,6 @@ end
       remove_file 'app/assets/stylesheets/application.css'
       copy_file 'application.css.scss',
         'app/assets/stylesheets/application.css.scss'
-    end
-
-    def install_bitters
-      run "bitters install --path app/assets/stylesheets"
-    end
-
-    def install_refills
-      run "rails generate refills:import flashes"
     end
 
     def gitignore_files
@@ -283,51 +277,6 @@ end
 
     def init_git
       run 'git init'
-    end
-
-    def create_heroku_apps(flags)
-      rack_env = "RACK_ENV=staging RAILS_ENV=staging"
-      rails_serve_static_files = "RAILS_SERVE_STATIC_FILES=true"
-      staging_config = "#{rack_env} #{rails_serve_static_files}"
-      run_heroku "create #{app_name}-production #{flags}", "production"
-      run_heroku "create #{app_name}-staging #{flags}", "staging"
-      run_heroku "config:add #{staging_config}", "staging"
-      run_heroku "config:add #{rails_serve_static_files}", "production"
-    end
-
-    def set_heroku_remotes
-      remotes = <<-SHELL
-
-# Set up the staging and production apps.
-#{join_heroku_app('staging')}
-#{join_heroku_app('production')}
-      SHELL
-
-      append_file 'bin/setup', remotes
-    end
-
-    def join_heroku_app(environment)
-      heroku_app_name = "#{app_name}-#{environment}"
-      <<-SHELL
-if heroku join --app #{heroku_app_name} &> /dev/null; then
-  git remote add #{environment} git@heroku.com:#{heroku_app_name}.git || true
-  printf 'You are a collaborator on the "#{heroku_app_name}" Heroku app\n'
-else
-  printf 'Ask for access to the "#{heroku_app_name}" Heroku app\n'
-fi
-      SHELL
-    end
-
-    def set_heroku_rails_secrets
-      %w(staging production).each do |environment|
-        run_heroku "config:add SECRET_KEY_BASE=#{generate_secret}", environment
-      end
-    end
-
-    def set_memory_management_variable
-      %w(staging production).each do |environment|
-        run_heroku "config:add NEW_RELIC_AGGRESSIVE_KEEPALIVE=1", environment
-      end
     end
 
     def provide_deploy_script
@@ -352,9 +301,11 @@ you can deploy to staging and production with:
       run "#{path_addition} hub create #{repo_name}"
     end
 
-    def setup_segment_io
-      copy_file '_analytics.html.erb',
-        'app/views/application/_analytics.html.erb'
+    def setup_rubocop_git
+      copy_file 'hound.yml', '.hound.yml'
+      copy_file 'rubocop.yml', '.rubocop.yml'
+      copy_file 'rubocop_git.rake', 'lib/tasks/rubocop_git.rake'
+      append_file 'Rakefile', %{\ntask default: "rubocop:git"}
     end
 
     def setup_bundler_audit
@@ -386,10 +337,6 @@ you can deploy to staging and production with:
         "Rails.application.routes.draw do\nend"
     end
 
-    def disable_xml_params
-      copy_file 'disable_xml_params.rb', 'config/initializers/disable_xml_params.rb'
-    end
-
     def setup_default_rake_task
       append_file 'Rakefile' do
         <<-EOS
@@ -419,11 +366,6 @@ end
         support_bin = File.expand_path(File.join('..', '..', 'spec', 'fakes', 'bin'))
         "PATH=#{support_bin}:$PATH"
       end
-    end
-
-    def run_heroku(command, environment)
-      path_addition = override_path_for_tests
-      run "#{path_addition} heroku #{command} --remote #{environment}"
     end
 
     def generate_secret

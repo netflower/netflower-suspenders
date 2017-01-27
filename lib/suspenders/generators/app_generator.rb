@@ -3,14 +3,8 @@ require 'rails/generators/rails/app/app_generator'
 
 module Suspenders
   class AppGenerator < Rails::Generators::AppGenerator
-    class_option :database, type: :string, aliases: "-d", default: "postgresql",
+    class_option :database, type: :string, aliases: "-d", default: "mysql",
       desc: "Configure for selected database (options: #{DATABASES.join("/")})"
-
-    class_option :heroku, type: :boolean, aliases: "-H", default: false,
-      desc: "Create staging and production Heroku apps"
-
-    class_option :heroku_flags, type: :string, default: "",
-      desc: "Set extra Heroku flags"
 
     class_option :github, type: :string, aliases: "-G", default: nil,
       desc: "Create Github repository and add remote origin pointed to repo"
@@ -36,16 +30,12 @@ module Suspenders
       invoke :create_suspenders_views
       invoke :configure_app
       invoke :setup_stylesheets
-      invoke :install_bitters
-      invoke :install_refills
       invoke :copy_miscellaneous_files
       invoke :customize_error_pages
       invoke :remove_routes_comment_lines
       invoke :setup_git
       invoke :setup_database
-      invoke :create_heroku_apps
-      invoke :create_github_repo
-      invoke :setup_segment_io
+      invoke :setup_rubocop_git
       invoke :setup_bundler_audit
       invoke :outro
     end
@@ -54,18 +44,14 @@ module Suspenders
       build :replace_gemfile
       build :set_ruby_to_version_being_used
 
-      if options[:heroku]
-        build :setup_heroku_specific_gems
-      end
-
       bundle_command 'install'
     end
 
     def setup_database
       say 'Setting up database'
 
-      if 'postgresql' == options[:database]
-        build :use_postgres_config_template
+      if 'mysql' == options[:database]
+        build :use_mysql_config_template
       end
 
       build :create_database
@@ -79,14 +65,17 @@ module Suspenders
       build :provide_dev_prime_task
       build :configure_generators
       build :configure_i18n_for_missing_translations
+      build :configure_model_annotations
     end
 
     def setup_test_environment
       say 'Setting up the test environment'
+      build :provide_ci_build_script
       build :set_up_factory_girl_for_rspec
       build :generate_rspec
       build :configure_rspec
-      build :configure_background_jobs_for_rspec
+      build :configure_simplecov
+      build :configure_background_jobs
       build :enable_database_cleaner
       build :configure_spec_support_features
       build :configure_travis
@@ -97,7 +86,6 @@ module Suspenders
 
     def setup_production_environment
       say 'Setting up the production environment'
-      build :configure_newrelic
       build :configure_smtp
       build :enable_rack_deflater
       build :setup_asset_host
@@ -127,26 +115,15 @@ module Suspenders
       build :configure_time_formats
       build :configure_rack_timeout
       build :configure_simple_form
-      build :disable_xml_params
       build :fix_i18n_deprecation_warning
       build :setup_default_rake_task
-      build :configure_unicorn
+      build :configure_puma
       build :setup_foreman
     end
 
     def setup_stylesheets
       say 'Set up stylesheets'
       build :setup_stylesheets
-    end
-
-    def install_bitters
-      say 'Install Bitters'
-      build :install_bitters
-    end
-
-    def install_refills
-      say "Install Refills"
-      build :install_refills
     end
 
     def setup_git
@@ -157,17 +134,6 @@ module Suspenders
       end
     end
 
-    def create_heroku_apps
-      if options[:heroku]
-        say "Creating Heroku apps"
-        build :create_heroku_apps, options[:heroku_flags]
-        build :set_heroku_remotes
-        build :set_heroku_rails_secrets
-        build :set_memory_management_variable
-        build :provide_deploy_script
-      end
-    end
-
     def create_github_repo
       if !options[:skip_git] && options[:github]
         say 'Creating Github repo'
@@ -175,13 +141,13 @@ module Suspenders
       end
     end
 
-    def setup_segment_io
-      say 'Setting up Segment.io'
-      build :setup_segment_io
-    end
-
     def setup_gitignore
       build :gitignore_files
+    end
+
+    def setup_rubocop_git
+      say 'Setting up rubocop-git'
+      build :setup_rubocop_git
     end
 
     def setup_bundler_audit
@@ -209,7 +175,7 @@ module Suspenders
 
     def outro
       say 'Congratulations! You just pulled our suspenders.'
-      say "Remember to run 'rails generate airbrake' with your API key."
+      say "Remember to run 'rails generate honeybadger' with your API key."
     end
 
     def run_bundle

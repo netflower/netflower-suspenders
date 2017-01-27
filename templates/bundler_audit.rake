@@ -5,6 +5,7 @@ if Rails.env.development? || Rails.env.test?
     desc "Updates the ruby-advisory-db and runs audit"
     task :audit do
       %w(update check).each do |command|
+        puts
         Bundler::Audit::CLI.start [command]
       end
     end
