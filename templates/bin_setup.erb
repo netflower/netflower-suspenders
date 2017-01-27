@@ -22,13 +22,10 @@ bundle exec rake db:setup dev:prime
 mkdir -p .git/safe
 
 # Pick a port for Foreman
-if ! grep --quiet --no-messages --fixed-strings 'port' .foreman; then
-  printf 'port: <%= config[:port_number] %>\n' >> .foreman
-fi
-
-if ! command -v foreman > /dev/null; then
-  printf 'Foreman is not installed.\n'
-  printf 'See https://github.com/ddollar/foreman for install instructions.\n'
+if ! command -v forego > /dev/null; then
+  printf 'Forego is not installed.\n'
+  printf 'See https://github.com/ddollar/forego for install instructions.\n'
+  printf 'It can also be installed with Homebrew.'
 fi
 
 # Add pids directory for sidekiq
